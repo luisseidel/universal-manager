@@ -1,0 +1,6 @@
+/common-domain/target/*
+/core-health/target/*
+/core-inventory/target/*
+/entrypoints-cli/target/*
+/infra-storage-mem/target/*
+*.class
