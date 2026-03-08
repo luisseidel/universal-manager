@@ -20,7 +20,7 @@ public class Phone {
         this.rawNumber = validator.clean(number);
     }
 
-    public String getFullFormatted() {
+    public String getFormatted() {
         return "+" + countryCode + " " + validator.format(rawNumber);
     }
 

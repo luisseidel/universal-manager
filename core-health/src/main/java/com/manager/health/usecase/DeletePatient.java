@@ -1,0 +1,27 @@
+package com.manager.health.usecase;
+
+import com.manager.health.domain.model.Patient;
+import com.manager.health.domain.repository.IPatientRepository;
+
+import java.util.Optional;
+
+public class DeletePatient {
+
+    private final IPatientRepository repository;
+
+    public DeletePatient(IPatientRepository repository) {
+        this.repository = repository;
+    }
+
+    public void execute(String document) {
+        Optional<Patient> patient = repository.findByDocument(document);
+
+        if (patient.isPresent()) {
+            this.repository.delete(patient.get().getId());
+            System.out.println("Paciente excluído! " + patient.get().getName());
+        } else {
+            throw new IllegalArgumentException("Paciente não encontrado para exclusão");
+        }
+
+    }
+}

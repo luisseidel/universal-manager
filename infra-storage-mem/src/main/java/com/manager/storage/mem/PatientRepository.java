@@ -33,4 +33,9 @@ public class PatientRepository implements IPatientRepository {
     public List<Patient> findAll() {
         return database.values().stream().toList();
     }
+
+    @Override
+    public void delete(UUID id) {
+        database.remove(id);
+    }
 }

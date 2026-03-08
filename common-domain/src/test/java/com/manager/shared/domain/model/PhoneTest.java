@@ -19,7 +19,7 @@ public class PhoneTest {
         Phone phone = new Phone(ddi, input);
 
         // ASSERT
-        assertEquals("+1 (202) 555-0123", phone.getFullFormatted());
+        assertEquals("+1 (202) 555-0123", phone.getFormatted());
         assertEquals("12025550123", phone.getInternationalRaw());
     }
 

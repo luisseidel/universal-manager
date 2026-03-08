@@ -8,7 +8,8 @@ import java.util.UUID;
 
 public interface IPatientRepository {
     void save(Patient patient);
+    List<Patient> findAll();
     Optional<Patient> findById(UUID id);
     Optional<Patient> findByDocument(String document);
-    List<Patient> findAll();
+    void delete(UUID id);
 }
