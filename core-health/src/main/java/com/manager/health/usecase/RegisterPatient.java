@@ -47,7 +47,7 @@ public class RegisterPatient {
 
         // Validação do Endereço
         try {
-            new Address(request.street(), request.houseNumber(), request.complement(),
+            new Address(request.street(), request.number(), request.complement(),
                     request.neighborhood(), request.city(), request.state(),
                     request.zipCode(), request.countryCode());
         } catch (IllegalArgumentException e) {
@@ -71,7 +71,7 @@ public class RegisterPatient {
         Phone phone = new Phone(request.phoneCountryCode(), request.phoneNumber());
 
         Address address = new Address(
-                request.street(), request.houseNumber(), request.complement(),
+                request.street(), request.number(), request.complement(),
                 request.neighborhood(), request.city(), request.state(),
                 request.zipCode(), request.countryCode()
         );

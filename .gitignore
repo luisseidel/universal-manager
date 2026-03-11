@@ -1,4 +1,5 @@
 /common-domain/target/*
+/common-infrastructure/target/*
 /core-health/target/*
 /core-inventory/target/*
 /entrypoints-cli/target/*

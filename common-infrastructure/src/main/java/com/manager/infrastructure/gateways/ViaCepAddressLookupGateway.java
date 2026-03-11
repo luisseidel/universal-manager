@@ -1,7 +1,7 @@
 package com.manager.infrastructure.gateways;
 
 import com.manager.shared.domain.gateway.IAddressLookupGateway;
-import com.manager.shared.domain.model.AddressDTO;
+import com.manager.shared.domain.model.dto.AddressDTO;
 
 public class ViaCepAddressLookupGateway implements IAddressLookupGateway {
 

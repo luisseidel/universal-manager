@@ -2,13 +2,8 @@ package com.manager.health.service;
 
 import com.manager.health.domain.model.PatientResponse;
 import com.manager.health.domain.model.RegisterPatientRequest;
+import com.manager.shared.service.IFacade;
 
-import java.util.List;
-
-public interface IPatientFacade {
-
-    void registerPatient(RegisterPatientRequest request);
-    List<PatientResponse> listPatients();
+public interface IPatientFacade extends IFacade<RegisterPatientRequest, PatientResponse, String> {
     PatientResponse findByDocument(String document);
-    void delete(String document);
 }

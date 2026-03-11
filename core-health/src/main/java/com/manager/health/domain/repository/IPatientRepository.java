@@ -1,15 +1,11 @@
 package com.manager.health.domain.repository;
 
 import com.manager.health.domain.model.Patient;
+import com.manager.shared.repository.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface IPatientRepository {
-    void save(Patient patient);
-    List<Patient> findAll();
-    Optional<Patient> findById(UUID id);
+public interface IPatientRepository extends Repository<Patient, UUID> {
     Optional<Patient> findByDocument(String document);
-    void delete(UUID id);
 }

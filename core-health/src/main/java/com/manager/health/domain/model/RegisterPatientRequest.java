@@ -9,7 +9,7 @@ public record RegisterPatientRequest(
         String phoneCountryCode,
         String phoneNumber,
         String street,
-        String houseNumber,
+        String number,
         String complement,
         String neighborhood,
         String city,

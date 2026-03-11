@@ -1,9 +1,10 @@
 package com.manager.inventory.domain.repository;
 
 import com.manager.inventory.domain.model.Item;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.List;
 
 public interface IItemRepository {
     void salvar(Item item);
