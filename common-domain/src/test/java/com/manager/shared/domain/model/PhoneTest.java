@@ -1,5 +1,6 @@
 package com.manager.shared.domain.model;
 
+import com.manager.shared.domain.model.entity.Phone;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

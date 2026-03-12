@@ -2,11 +2,11 @@ package com.manager.health.usecase;
 
 import com.manager.health.domain.model.Patient;
 import com.manager.health.domain.model.RegisterPatientRequest;
-import com.manager.health.domain.repository.IPatientRepository;
-import com.manager.shared.domain.model.Address;
-import com.manager.shared.domain.model.Document;
-import com.manager.shared.domain.model.Email;
-import com.manager.shared.domain.model.Phone;
+import com.manager.health.domain.repository.IPatientIRepository;
+import com.manager.shared.domain.model.entity.Address;
+import com.manager.shared.domain.model.entity.Document;
+import com.manager.shared.domain.model.entity.Email;
+import com.manager.shared.domain.model.entity.Phone;
 import com.manager.shared.domain.model.validators.DocumentValidatorFactory;
 import com.manager.shared.domain.validation.DomainValidationException;
 import com.manager.shared.domain.validation.ValidationNotification;
@@ -15,9 +15,9 @@ import java.time.LocalDate;
 
 public class RegisterPatient {
 
-    private final IPatientRepository repository;
+    private final IPatientIRepository repository;
 
-    public RegisterPatient(IPatientRepository repository) {
+    public RegisterPatient(IPatientIRepository repository) {
         this.repository = repository;
     }
 

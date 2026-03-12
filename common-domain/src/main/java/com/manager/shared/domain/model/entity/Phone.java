@@ -1,4 +1,4 @@
-package com.manager.shared.domain.model;
+package com.manager.shared.domain.model.entity;
 
 import com.manager.shared.domain.model.validators.IPhoneValidator;
 import com.manager.shared.domain.model.validators.PhoneValidatorFactory;

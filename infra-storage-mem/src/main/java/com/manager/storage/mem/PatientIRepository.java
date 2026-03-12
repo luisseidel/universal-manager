@@ -1,11 +1,12 @@
 package com.manager.storage.mem;
 
 import com.manager.health.domain.model.Patient;
-import com.manager.health.domain.repository.IPatientRepository;
+import com.manager.health.domain.repository.IPatientIRepository;
+import com.manager.shared.repository.ISpecification;
 
 import java.util.*;
 
-public class PatientRepository implements IPatientRepository {
+public class PatientIRepository implements IPatientIRepository {
 
     private final Map<UUID, Patient> database = new HashMap<>();
 
@@ -24,10 +25,11 @@ public class PatientRepository implements IPatientRepository {
     }
 
     @Override
-    public List<Patient> findPaged(int page, int size) {
+    public List<Patient> findPaged(ISpecification<Patient> spec, int page, int size) {
         int skip = (page - 1) * size;
 
         return database.values().stream()
+                .filter(spec::isSatisfiedBy)
                 .skip(skip)
                 .limit(size)
                 .toList();

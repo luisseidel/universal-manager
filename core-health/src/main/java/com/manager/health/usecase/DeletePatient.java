@@ -1,15 +1,15 @@
 package com.manager.health.usecase;
 
 import com.manager.health.domain.model.Patient;
-import com.manager.health.domain.repository.IPatientRepository;
+import com.manager.health.domain.repository.IPatientIRepository;
 
 import java.util.Optional;
 
 public class DeletePatient {
 
-    private final IPatientRepository repository;
+    private final IPatientIRepository repository;
 
-    public DeletePatient(IPatientRepository repository) {
+    public DeletePatient(IPatientIRepository repository) {
         this.repository = repository;
     }
 

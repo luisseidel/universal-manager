@@ -2,15 +2,15 @@ package com.manager.health.usecase;
 
 import com.manager.health.domain.model.Patient;
 import com.manager.health.domain.model.PatientResponse;
-import com.manager.health.domain.repository.IPatientRepository;
+import com.manager.health.domain.repository.IPatientIRepository;
 
 import java.util.Optional;
 
 public class SearchPatient {
 
-    private final IPatientRepository repository;
+    private final IPatientIRepository repository;
 
-    public SearchPatient(IPatientRepository repository) {
+    public SearchPatient(IPatientIRepository repository) {
         this.repository = repository;
     }
 

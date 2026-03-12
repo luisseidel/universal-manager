@@ -1,5 +1,6 @@
 package com.manager.shared.domain.model;
 
+import com.manager.shared.domain.model.entity.Document;
 import com.manager.shared.domain.model.validators.IDocumentValidator;
 import com.manager.shared.domain.model.validators.USADocumentValidator;
 import org.junit.jupiter.api.DisplayName;

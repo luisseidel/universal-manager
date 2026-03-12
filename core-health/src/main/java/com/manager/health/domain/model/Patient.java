@@ -1,9 +1,9 @@
 package com.manager.health.domain.model;
 
-import com.manager.shared.domain.model.Address;
-import com.manager.shared.domain.model.Document;
-import com.manager.shared.domain.model.Email;
-import com.manager.shared.domain.model.Phone;
+import com.manager.shared.domain.model.entity.Address;
+import com.manager.shared.domain.model.entity.Document;
+import com.manager.shared.domain.model.entity.Email;
+import com.manager.shared.domain.model.entity.Phone;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -17,8 +17,17 @@ public class Patient {
     private Email email;
     private Phone phone;
     private Address address;
+    private boolean active;
 
-    public Patient(String name, LocalDate birthDate, Document document, Email email, Phone phone, Address address) {
+    public Patient(
+        String name,
+        LocalDate birthDate,
+        Document document,
+        Email email,
+        Phone phone,
+        Address address,
+        boolean active
+    ) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.birthDate = birthDate;
@@ -26,6 +35,7 @@ public class Patient {
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.active = active;
         validate();
     }
 
@@ -86,5 +96,13 @@ public class Patient {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

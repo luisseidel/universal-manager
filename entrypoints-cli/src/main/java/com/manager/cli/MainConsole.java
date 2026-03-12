@@ -64,7 +64,8 @@ public class MainConsole {
         String option = "";
 
         while(!"V".equalsIgnoreCase(option)) {
-            PagedResponse<PatientResponse> response = patientFacade.listPaged(currentPage, pageSize);
+            String patientName = "Paciente Teste 1";
+            PagedResponse<PatientResponse> response = patientFacade.listPaged(patientName, currentPage, pageSize);
 
             System.out.println("\n--- LISTA DE PACIENTES (Página " + response.currentPage() + " de " + response.totalPages() + ") ---");
             System.out.println("Total de registros: " + response.totalItems());
@@ -88,7 +89,8 @@ public class MainConsole {
             }
         }
 
-        PagedResponse<PatientResponse> asd = patientFacade.listPaged(10, 10);
+        String patientName = "Paciente Teste 1";
+        PagedResponse<PatientResponse> asd = patientFacade.listPaged(patientName, 10, 10);
 
         for (PatientResponse p : asd.items()) {
             printPatient(p);
@@ -123,7 +125,10 @@ public class MainConsole {
     private void searchPatientsFlow() {
         System.out.println("\n --- BUSCA DE PACIENTES ---");
         String docValue = readInput("Número do Documento (BR): ");
-        PatientResponse response = patientFacade.findByDocument(docValue);
+        String nome = readInput("Nome do paciente: ");
+        String ativo = readInput("Ativo? (S ou N): ");
+
+        PatientResponse response = patientFacade.listPaged();
 
         printPatient(response);
     }

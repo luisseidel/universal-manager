@@ -1,16 +1,16 @@
 package com.manager.cli;
 
 import com.manager.health.domain.model.Patient;
-import com.manager.health.domain.repository.IPatientRepository;
+import com.manager.health.domain.repository.IPatientIRepository;
 import com.manager.health.service.IPatientFacade;
 import com.manager.health.service.PatientFacade;
 import com.manager.infrastructure.gateways.ViaCepAddressLookupGateway;
-import com.manager.shared.domain.model.Address;
-import com.manager.shared.domain.model.Document;
-import com.manager.shared.domain.model.Email;
-import com.manager.shared.domain.model.Phone;
+import com.manager.shared.domain.model.entity.Address;
+import com.manager.shared.domain.model.entity.Document;
+import com.manager.shared.domain.model.entity.Email;
+import com.manager.shared.domain.model.entity.Phone;
 import com.manager.shared.domain.model.validators.DocumentValidatorFactory;
-import com.manager.storage.mem.PatientRepository;
+import com.manager.storage.mem.PatientIRepository;
 
 import java.time.LocalDate;
 
@@ -18,7 +18,7 @@ public class Application {
 
     static void main() {
         // 1. Instancia a Infraestrutura (Poderia ser um banco real aqui)
-        var repository = new PatientRepository();
+        var repository = new PatientIRepository();
 
         // 2. Instancia o Caso de Uso injetando o repositório
         var lookupGateway = new ViaCepAddressLookupGateway();
@@ -34,7 +34,7 @@ public class Application {
         console.run();
     }
 
-    private static void seedData(IPatientRepository repository) {
+    private static void seedData(IPatientIRepository repository) {
         System.out.println("🌱 Gerando massa de dados para teste...");
         for (int i = 1; i <= 25; i++) {
             String name = "Paciente Teste " + i;
@@ -46,7 +46,8 @@ public class Application {
                     new Document("54280504032", "BR", DocumentValidatorFactory.getValidator("BR")),
                     new Email("paciente" + i + "@email.com"),
                     new Phone("55", "519999999" + i),
-                    new Address("Rua " + i, String.valueOf(i), "", "Bairro", "Cidade", "ST", "12345000", "BR")
+                    new Address("Rua " + i, String.valueOf(i), "", "Bairro", "Cidade", "ST", "12345000", "BR"),
+                    (i % 2 == 0 ? true : false)
             );
 
             repository.save(p);
