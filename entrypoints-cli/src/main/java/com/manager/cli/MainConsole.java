@@ -1,6 +1,7 @@
 package com.manager.cli;
 
 import com.manager.health.domain.model.PatientResponse;
+import com.manager.health.domain.model.PatientSearchCriteria;
 import com.manager.health.domain.model.RegisterPatientRequest;
 import com.manager.health.service.IPatientFacade;
 import com.manager.infrastructure.gateways.ViaCepAddressLookupGateway;
@@ -65,7 +66,8 @@ public class MainConsole {
 
         while(!"V".equalsIgnoreCase(option)) {
             String patientName = "Paciente Teste 1";
-            PagedResponse<PatientResponse> response = patientFacade.listPaged(patientName, currentPage, pageSize);
+            PatientSearchCriteria criteria = new PatientSearchCriteria(patientName, null, true, currentPage, pageSize);
+            PagedResponse<PatientResponse> response = patientFacade.listPaged(criteria);
 
             System.out.println("\n--- LISTA DE PACIENTES (Página " + response.currentPage() + " de " + response.totalPages() + ") ---");
             System.out.println("Total de registros: " + response.totalItems());
@@ -90,7 +92,8 @@ public class MainConsole {
         }
 
         String patientName = "Paciente Teste 1";
-        PagedResponse<PatientResponse> asd = patientFacade.listPaged(patientName, 10, 10);
+        PatientSearchCriteria criteria = new PatientSearchCriteria(patientName, null, true, 10, 10);
+        PagedResponse<PatientResponse> asd = patientFacade.listPaged(criteria);
 
         for (PatientResponse p : asd.items()) {
             printPatient(p);
@@ -124,13 +127,20 @@ public class MainConsole {
 
     private void searchPatientsFlow() {
         System.out.println("\n --- BUSCA DE PACIENTES ---");
-        String docValue = readInput("Número do Documento (BR): ");
         String nome = readInput("Nome do paciente: ");
-        String ativo = readInput("Ativo? (S ou N): ");
+        String docValue = readInput("Número do Documento (BR): ");
+        String ativo = readInput("Ativo? (S ou N): ", "S");
+        Boolean active = "S".equals(ativo);
 
-        PatientResponse response = patientFacade.listPaged();
+        PatientSearchCriteria criteria = new PatientSearchCriteria(nome, docValue, active, 1, 10);
 
-        printPatient(response);
+        PagedResponse<PatientResponse> response = patientFacade.listPaged(criteria);
+
+        if (response.items().isEmpty()) {
+            System.out.println("Nenhum paciente encontrado com esses filtros.");
+        } else {
+            response.items().forEach(this::printPatient);
+        }
     }
 
     private void deletePatientFlow() {

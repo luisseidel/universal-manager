@@ -52,7 +52,9 @@ public class PatientIRepository implements IPatientIRepository {
     }
 
     @Override
-    public int count() {
-        return database.size();
+    public long count(ISpecification<Patient> spec) {
+        return database.values().stream()
+                .filter(spec::isSatisfiedBy)
+                .count();
     }
 }

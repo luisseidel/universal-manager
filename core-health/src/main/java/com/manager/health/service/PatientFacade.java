@@ -1,6 +1,7 @@
 package com.manager.health.service;
 
 import com.manager.health.domain.model.PatientResponse;
+import com.manager.health.domain.model.PatientSearchCriteria;
 import com.manager.health.domain.model.RegisterPatientRequest;
 import com.manager.health.domain.repository.IPatientIRepository;
 import com.manager.health.usecase.*;
@@ -28,8 +29,8 @@ public class PatientFacade implements IPatientFacade {
     }
 
     @Override
-    public PagedResponse<PatientResponse> listPaged(String query, int page, int size) {
-        return listPatients.execute(query, page, size);
+    public PagedResponse<PatientResponse> listPaged(PatientSearchCriteria criteria) {
+        return listPatients.execute(criteria);
     }
 
     @Override
