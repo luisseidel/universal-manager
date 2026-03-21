@@ -10,10 +10,10 @@ public record PagedResponse<T>(
         boolean hasNext
 ) {
 
-    public static <T> PagedResponse<T> of(List<T> items, int page, int size, long total) {
-        int totalPages = (int) Math.ceil((double) total / size);
-        boolean hasNext = page < totalPages;
-        return new PagedResponse<T>(items, page, total, totalPages, hasNext);
+    public static <T> PagedResponse<T> of(List<T> items, int currentPage, int size, long totalElements) {
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        boolean hasNext = currentPage < totalPages;
+        return new PagedResponse<T>(items, currentPage, totalElements, totalPages, hasNext);
     }
 
 }
