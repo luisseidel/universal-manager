@@ -2,7 +2,7 @@ package com.manager.health.usecase;
 
 import com.manager.health.domain.model.Patient;
 import com.manager.health.domain.model.RegisterPatientRequest;
-import com.manager.health.domain.repository.IPatientIRepository;
+import com.manager.health.domain.repository.IPatientRepository;
 import com.manager.shared.domain.model.entity.Address;
 import com.manager.shared.domain.model.entity.Document;
 import com.manager.shared.domain.model.entity.Email;
@@ -15,14 +15,18 @@ import java.time.LocalDate;
 
 public class RegisterPatient {
 
-    private final IPatientIRepository repository;
+    private final IPatientRepository repository;
 
-    public RegisterPatient(IPatientIRepository repository) {
+    public RegisterPatient(IPatientRepository repository) {
         this.repository = repository;
     }
 
     public void execute(RegisterPatientRequest request) {
         ValidationNotification notification = new ValidationNotification();
+
+        if (repository.findByDocument(request.documentValue()).isPresent()) {
+            notification.addError("Documento: " + request.documentValue() + System.lineSeparator() + " Já cadastrado para outro usuário!");
+        }
 
         try {
             new Document(request.documentValue(), request.documentCountry(),
@@ -83,7 +87,8 @@ public class RegisterPatient {
                 doc,
                 email,
                 phone,
-                address
+                address,
+                true
         );
 
         // 3. Persistir

@@ -3,21 +3,22 @@ package com.manager.health.usecase;
 import com.manager.health.domain.model.Patient;
 import com.manager.health.domain.model.PatientResponse;
 import com.manager.health.domain.model.PatientSearchCriteria;
-import com.manager.health.domain.repository.IPatientIRepository;
+import com.manager.health.domain.repository.IPatientRepository;
 import com.manager.health.domain.specs.ActivePatientSpecification;
 import com.manager.health.domain.specs.PatientDocumentSpecification;
 import com.manager.health.domain.specs.PatientNameLikeSpecification;
+import com.manager.health.mapper.PatientMapper;
 import com.manager.shared.domain.model.dto.PagedResponse;
 import com.manager.shared.repository.ISpecification;
 
-import java.util.List;
-
 public class ListPatients {
 
-    private final IPatientIRepository repository;
+    private final IPatientRepository repository;
+    private final PatientMapper mapper;
 
-    public ListPatients(IPatientIRepository repository) {
+    public ListPatients(IPatientRepository repository, PatientMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     public PagedResponse<PatientResponse> execute(PatientSearchCriteria criteria) {
@@ -35,18 +36,8 @@ public class ListPatients {
             spec = spec.and(new PatientDocumentSpecification(criteria.documentNumber()));
         }
 
-        List<Patient> paged = repository.findPaged(spec, criteria.page(), criteria.size());
-        long total = repository.count(spec);
+        PagedResponse<Patient> paged = repository.findPaged(spec, criteria.page(), criteria.size());
 
-        List<PatientResponse> items = paged.stream().map(
-            p -> new PatientResponse(
-                    p.getName(),
-                    p.getDocument().getFormatted(),
-                    p.getPhone().getFormatted(),
-                    p.getEmail().getValue(),
-                    p.getAddress().getFullAddress()
-        )).toList();
-
-        return PagedResponse.of(items, criteria.page(), criteria.size(), total);
+        return paged.map(mapper::toResponse);
     }
 }

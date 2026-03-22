@@ -1,6 +1,7 @@
 package com.manager.shared.domain.model.dto;
 
 import java.util.List;
+import java.util.function.Function;
 
 public record PagedResponse<T>(
         List<T> items,
@@ -14,6 +15,12 @@ public record PagedResponse<T>(
         int totalPages = (int) Math.ceil((double) totalElements / size);
         boolean hasNext = currentPage < totalPages;
         return new PagedResponse<T>(items, currentPage, totalElements, totalPages, hasNext);
+    }
+
+    public <R> PagedResponse<R> map(Function<T, R> mapper) {
+        List<R> mappedItems = this.items.stream().map(mapper).toList();
+
+        return new PagedResponse<>(mappedItems, currentPage, totalItems, totalPages, hasNext);
     }
 
 }

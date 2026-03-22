@@ -3,7 +3,9 @@ package com.manager.health.service;
 import com.manager.health.domain.model.PatientResponse;
 import com.manager.health.domain.model.PatientSearchCriteria;
 import com.manager.health.domain.model.RegisterPatientRequest;
-import com.manager.health.domain.repository.IPatientIRepository;
+import com.manager.health.domain.model.UpdatePatientRequest;
+import com.manager.health.domain.repository.IPatientRepository;
+import com.manager.health.mapper.PatientMapper;
 import com.manager.health.usecase.*;
 import com.manager.shared.domain.model.dto.PagedResponse;
 
@@ -14,12 +16,14 @@ public class PatientFacade implements IPatientFacade {
     private final RegisterPatient registerPatient;
     private final UpdatePatient updatePatient;
     private final DeletePatient deletePatient;
+    private final PatientMapper patientMapper;
 
-    public PatientFacade(IPatientIRepository repository) {
-        this.listPatients = new ListPatients(repository);
+    public PatientFacade(IPatientRepository repository) {
+        this.patientMapper = new PatientMapper();
+        this.listPatients = new ListPatients(repository, patientMapper);
         this.searchPatient = new SearchPatient(repository);
         this.registerPatient = new RegisterPatient(repository);
-        this.updatePatient = new UpdatePatient(repository);
+        this.updatePatient = new UpdatePatient(repository, patientMapper);
         this.deletePatient = new DeletePatient(repository);
     }
 
@@ -39,7 +43,7 @@ public class PatientFacade implements IPatientFacade {
     }
 
     @Override
-    public void update(String document, RegisterPatientRequest request) {
+    public void update(String document, UpdatePatientRequest request) {
         updatePatient.execute(document, request);
     }
 

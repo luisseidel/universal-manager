@@ -6,6 +6,6 @@ import com.manager.shared.repository.IRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface IPatientIRepository extends IRepository<Patient, UUID> {
+public interface IPatientRepository extends IRepository<Patient, UUID> {
     Optional<Patient> findByDocument(String document);
 }

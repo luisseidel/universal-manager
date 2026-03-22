@@ -3,6 +3,7 @@ package com.manager.cli;
 import com.manager.health.domain.model.PatientResponse;
 import com.manager.health.domain.model.PatientSearchCriteria;
 import com.manager.health.domain.model.RegisterPatientRequest;
+import com.manager.health.domain.model.UpdatePatientRequest;
 import com.manager.health.service.IPatientFacade;
 import com.manager.infrastructure.gateways.ViaCepAddressLookupGateway;
 import com.manager.shared.domain.model.dto.AddressDTO;
@@ -116,7 +117,7 @@ public class MainConsole {
         System.out.println("\n --- NOVOS DADOS ---");
 
         try {
-            RegisterPatientRequest request = collectPatientData("update");
+            UpdatePatientRequest request = (UpdatePatientRequest) collectPatientData("update");
             patientFacade.update(document, request);
             System.out.println("Atualização concluída!");
         } catch (DomainValidationException e) {
@@ -153,7 +154,7 @@ public class MainConsole {
         System.out.println("\n--- NOVO CADASTRO DE PACIENTE ---");
 
         try {
-            RegisterPatientRequest request = collectPatientData("register");
+            RegisterPatientRequest request = (RegisterPatientRequest) collectPatientData("register");
 
             // 6. Execução do Caso de Uso
             patientFacade.create(request);
@@ -166,17 +167,17 @@ public class MainConsole {
         }
     }
 
-    private RegisterPatientRequest collectPatientData(String operationType) {
+    private Object collectPatientData(String operation) {
+        String name = "";
         String birthDate = "";
-        String docValue = "";
         String docCountry = "";
-
-        if (!"update".equalsIgnoreCase(operationType)) {
+        String docValue = "";
+        if (!"update".equalsIgnoreCase(operation)) {
+            name = readInput("Nome completo: ");
             birthDate = readInput("Data de Nascimento (AAAA-MM-DD): ");
             docCountry = readInput("País do Doc (BR/US) [BR]: ", "BR");
             docValue = readInput("Número do Documento: ");
         }
-        String name = readInput("Nome completo: ");
         String email = readInput("E-mail: ");
         String ddi = readInput("DDI [default BR: 55]: ", "55");
         String phone = readInput("Telefone com DDD: ");
@@ -203,7 +204,14 @@ public class MainConsole {
         String num = readInput("Número: ");
         String comp = readInput("Complemento: ", "");
 
-        return new RegisterPatientRequest(name, birthDate, docValue, docCountry, email, ddi, phone,
+        if ("update".equalsIgnoreCase(operation)) {
+            String ativo = readInput("Ativo? (S ou N): ", "S");
+            Boolean active = "S".equals(ativo);
+
+            return new UpdatePatientRequest(name, email, ddi, phone,
+                    street, num, comp, neighborhood, city, state, zip, country, active);
+        }
+        return new RegisterPatientRequest(name, birthDate, docCountry, docValue, email, ddi, phone,
                 street, num, comp, neighborhood, city, state, zip, country);
     }
 

@@ -1,23 +1,24 @@
 package com.manager.health.usecase;
 
 import com.manager.health.domain.model.Patient;
-import com.manager.health.domain.model.RegisterPatientRequest;
-import com.manager.health.domain.repository.IPatientIRepository;
-import com.manager.shared.domain.model.entity.Address;
-import com.manager.shared.domain.model.entity.Email;
-import com.manager.shared.domain.model.entity.Phone;
+import com.manager.health.domain.model.UpdatePatientRequest;
+import com.manager.health.domain.repository.IPatientRepository;
+import com.manager.health.mapper.PatientMapper;
 import com.manager.shared.domain.validation.DomainValidationException;
 import com.manager.shared.domain.validation.ValidationNotification;
 
 public class UpdatePatient {
 
-    private final IPatientIRepository repository;
+    private final IPatientRepository repository;
+    private final PatientMapper mapper;
 
-    public UpdatePatient(IPatientIRepository repository) {
+    public
+    UpdatePatient(IPatientRepository repository, PatientMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
-    public void execute(String document, RegisterPatientRequest request) {
+    public void execute(String document, UpdatePatientRequest request) {
 
         Patient existing = repository.findByDocument(document).orElseThrow(
                 () -> new IllegalArgumentException("Paciente não encontrado!")
@@ -26,18 +27,7 @@ public class UpdatePatient {
         ValidationNotification validationNotification = new ValidationNotification();
 
         try {
-            Email email = new Email(request.email());
-            Phone phone = new Phone(request.phoneCountryCode(), request.phoneNumber());
-            Address address = new Address(
-                    request.street(), request.number(), request.complement(), request.neighborhood(),
-                    request.city(), request.state(), request.zipCode(), request.countryCode()
-            );
-
-            existing.setEmail(email);
-            existing.setPhone(phone);
-            existing.setAddress(address);
-            existing.setName(request.name());
-
+            mapper.updateEntity(existing, request);
             repository.update(existing);
         } catch (Exception e) {
             validationNotification.addError(e.getMessage());
