@@ -18,11 +18,18 @@
     </properties>
 
     <dependencies>
+        <!-- MODULOS INTERNOS -->
         <dependency>
             <groupId>com.manager</groupId>
             <artifactId>core-health</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.manager</groupId>
+            <artifactId>core-audit</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

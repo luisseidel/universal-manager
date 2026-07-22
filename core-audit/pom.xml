@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>common-domain</artifactId>
+    <artifactId>core-audit</artifactId>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
@@ -18,6 +18,14 @@
     </properties>
 
     <dependencies>
+        <!-- MODULOS INTERNOS -->
+        <dependency>
+            <groupId>com.manager</groupId>
+            <artifactId>common-domain</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- TESTES -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

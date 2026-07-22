@@ -18,10 +18,21 @@
     </properties>
 
     <dependencies>
+        <!-- MODULOS INTERNOS -->
         <dependency>
             <groupId>com.manager</groupId>
             <artifactId>common-domain</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <!-- TESTES -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
         </dependency>
     </dependencies>
 

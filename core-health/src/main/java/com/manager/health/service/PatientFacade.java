@@ -8,6 +8,7 @@ import com.manager.health.domain.repository.IPatientRepository;
 import com.manager.health.mapper.PatientMapper;
 import com.manager.health.usecase.*;
 import com.manager.shared.domain.model.dto.PagedResponse;
+import com.manager.shared.events.IEventPublisher;
 
 public class PatientFacade implements IPatientFacade {
 
@@ -18,13 +19,14 @@ public class PatientFacade implements IPatientFacade {
     private final DeletePatient deletePatient;
     private final PatientMapper patientMapper;
 
-    public PatientFacade(IPatientRepository repository) {
+    public PatientFacade(IPatientRepository repository, IEventPublisher eventPublisher) {
+
         this.patientMapper = new PatientMapper();
         this.listPatients = new ListPatients(repository, patientMapper);
         this.searchPatient = new SearchPatient(repository);
-        this.registerPatient = new RegisterPatient(repository);
-        this.updatePatient = new UpdatePatient(repository, patientMapper);
-        this.deletePatient = new DeletePatient(repository);
+        this.registerPatient = new RegisterPatient(repository, patientMapper, eventPublisher);
+        this.updatePatient = new UpdatePatient(repository, patientMapper, eventPublisher);
+        this.deletePatient = new DeletePatient(repository, eventPublisher);
     }
 
     @Override
@@ -51,6 +53,5 @@ public class PatientFacade implements IPatientFacade {
     public void delete(String document) {
         deletePatient.execute(document);
     }
-
 
 }

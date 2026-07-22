@@ -18,6 +18,7 @@
     </properties>
 
     <dependencies>
+        <!-- MODULOS INTERNOS -->
         <dependency>
             <groupId>com.manager</groupId>
             <artifactId>infra-storage-mem</artifactId>

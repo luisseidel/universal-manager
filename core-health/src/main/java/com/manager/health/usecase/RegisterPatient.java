@@ -1,8 +1,12 @@
 package com.manager.health.usecase;
 
+import com.manager.health.domain.events.PatientCreatedEvent;
 import com.manager.health.domain.model.Patient;
+import com.manager.health.domain.model.PatientResponse;
 import com.manager.health.domain.model.RegisterPatientRequest;
+import com.manager.health.domain.model.UpdatePatientRequest;
 import com.manager.health.domain.repository.IPatientRepository;
+import com.manager.shared.domain.model.IMapper;
 import com.manager.shared.domain.model.entity.Address;
 import com.manager.shared.domain.model.entity.Document;
 import com.manager.shared.domain.model.entity.Email;
@@ -10,15 +14,18 @@ import com.manager.shared.domain.model.entity.Phone;
 import com.manager.shared.domain.model.validators.DocumentValidatorFactory;
 import com.manager.shared.domain.validation.DomainValidationException;
 import com.manager.shared.domain.validation.ValidationNotification;
-
-import java.time.LocalDate;
+import com.manager.shared.events.IEventPublisher;
 
 public class RegisterPatient {
 
     private final IPatientRepository repository;
+    private final IMapper<Patient, PatientResponse, RegisterPatientRequest, UpdatePatientRequest> mapper;
+    private final IEventPublisher eventPublisher;
 
-    public RegisterPatient(IPatientRepository repository) {
-        this.repository = repository;
+    public RegisterPatient(IPatientRepository repo, IMapper mapper, IEventPublisher publisher) {
+        this.repository = repo;
+        this.mapper = mapper;
+        this.eventPublisher = publisher;
     }
 
     public void execute(RegisterPatientRequest request) {
@@ -63,36 +70,10 @@ public class RegisterPatient {
             throw new DomainValidationException(notification.getErrorMessage());
         }
 
-        // 1. Criar os Value Objects (Validação de formato automática)
-        Document doc = new Document(
-                request.documentValue(),
-                request.documentCountry(),
-                DocumentValidatorFactory.getValidator(request.documentCountry())
-        );
-
-        Email email = new Email(request.email());
-
-        Phone phone = new Phone(request.phoneCountryCode(), request.phoneNumber());
-
-        Address address = new Address(
-                request.street(), request.number(), request.complement(),
-                request.neighborhood(), request.city(), request.state(),
-                request.zipCode(), request.countryCode()
-        );
-
-        // 2. Instanciar a Entidade (Validação de Regras de Negócio)
-        Patient patient = new Patient(
-                request.name(),
-                LocalDate.parse(request.birthDate()),
-                doc,
-                email,
-                phone,
-                address,
-                true
-        );
+        Patient p = mapper.toDomain(request);
 
         // 3. Persistir
-        repository.save(patient);
-        System.out.println("Paciente " + patient.getName() + " registrado com sucesso!");
+        repository.save(p);
+        eventPublisher.publish(new PatientCreatedEvent(p.getId(), p.getName()));
     }
 }

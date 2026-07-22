@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BrazilDocumentTest {
+class BrazilDocumentTest {
 
     private final BrazilDocumentValidator validator = new BrazilDocumentValidator();
 
@@ -26,22 +26,6 @@ public class BrazilDocumentTest {
         assertEquals("123.456.789-09", formatado);
         assertEquals("12345678909", limpo);
     }
-
-//    @Test
-//    @DisplayName("Deve validar o novo CPF Alfanumérico (Regra 2025/2026)")
-//    void deveValidarNovoCpfAlfanumerico() {
-//        // 1. ARRANGE
-//        // Exemplo hipotético onde letras nas 9 primeiras posições resultam nos dígitos 31
-//        String cpfAlfanumerico = "A1B2C3D4E31";
-//
-//        // 2. ACT
-//        boolean ehValido = validator.isValid(cpfAlfanumerico);
-//        String formatado = validator.format(cpfAlfanumerico);
-//
-//        // 3. ASSERT
-//        assertTrue(ehValido, "O novo CPF alfanumérico deveria ser válido pelo cálculo de pesos");
-//        assertEquals("A1B.2C3.D4E-31", formatado);
-//    }
 
     @Test
     @DisplayName("Deve invalidar CPF com dígitos verificadores incorretos")
@@ -89,7 +73,7 @@ public class BrazilDocumentTest {
     @DisplayName("Deve validar e formatar um CNPJ numérico tradicional válido")
     void deveValidarCnpjNumericoTradicional() {
         // 1. ARRANGE
-            String cnpjEntrada = "02.437.430/0001-09";
+        String cnpjEntrada = "02.437.430/0001-09";
 
         // 2. ACT
         boolean ehValido = validator.isValid(cnpjEntrada);
