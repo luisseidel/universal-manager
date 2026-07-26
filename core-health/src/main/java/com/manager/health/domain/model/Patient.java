@@ -40,9 +40,11 @@ public class Patient {
     }
 
     private void validate() {
-        if (name == null || name.isBlank()) throw new IllegalArgumentException("Nome é obrigatório");
-        if (birthDate != null && birthDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Data de nascimento não pode ser no futuro");
+        if (name == null || name.trim().isBlank()) {
+            throw new IllegalArgumentException("Name cannot be blank or null!");
+        }
+        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Birthdate cannot be null or in the future!");
         }
     }
 

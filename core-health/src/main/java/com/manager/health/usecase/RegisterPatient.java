@@ -6,12 +6,12 @@ import com.manager.health.domain.model.PatientResponse;
 import com.manager.health.domain.model.RegisterPatientRequest;
 import com.manager.health.domain.model.UpdatePatientRequest;
 import com.manager.health.domain.repository.IPatientRepository;
+import com.manager.shared.domain.enums.Country;
 import com.manager.shared.domain.model.IMapper;
 import com.manager.shared.domain.model.entity.Address;
 import com.manager.shared.domain.model.entity.Document;
 import com.manager.shared.domain.model.entity.Email;
 import com.manager.shared.domain.model.entity.Phone;
-import com.manager.shared.domain.model.validators.DocumentValidatorFactory;
 import com.manager.shared.domain.validation.DomainValidationException;
 import com.manager.shared.domain.validation.ValidationNotification;
 import com.manager.shared.events.IEventPublisher;
@@ -36,8 +36,7 @@ public class RegisterPatient {
         }
 
         try {
-            new Document(request.documentValue(), request.documentCountry(),
-                    DocumentValidatorFactory.getValidator(request.documentCountry()));
+            new Document(request.documentValue(), Country.fromCodeOrDdi(request.documentCountry()));
         } catch (IllegalArgumentException e) {
             notification.addError("- Documento: " + e.getMessage());
         }
@@ -51,7 +50,7 @@ public class RegisterPatient {
 
         // Validação do Telefone
         try {
-            new Phone(request.phoneCountryCode(), request.phoneNumber());
+            new Phone(request.phoneNumber(), Country.fromCodeOrDdi(request.phoneCountryCode()));
         } catch (IllegalArgumentException e) {
             notification.addError("- Telefone: " + e.getMessage());
         }
@@ -60,7 +59,7 @@ public class RegisterPatient {
         try {
             new Address(request.street(), request.number(), request.complement(),
                     request.neighborhood(), request.city(), request.state(),
-                    request.zipCode(), request.countryCode());
+                    request.zipCode(), Country.fromCodeOrDdi(request.countryCode()));
         } catch (IllegalArgumentException e) {
             notification.addError("- Endereço: " + e.getMessage());
         }

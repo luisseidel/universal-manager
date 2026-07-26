@@ -1,5 +1,9 @@
 package com.manager.shared.domain.model.entity;
 
+import com.manager.shared.domain.enums.Country;
+
+import java.util.Objects;
+
 public class Address {
 
     private final String street;
@@ -9,35 +13,36 @@ public class Address {
     private final String city;
     private final String state;
     private final String zipCode;
-    private final String countryCode; // ISO 3166-1 (BR, US, etc)
+    private final Country country; // ISO 3166-1 (BR, US, etc)
 
     public Address(String street, String number, String complement, String neighborhood,
-                   String city, String state, String zipCode, String countryCode) {
+                   String city, String state, String zipCode, Country country) {
 
-        // Validação de consistência básica
-        validate(street, city, state, zipCode, countryCode);
+        validate(street, city, state, zipCode, country);
 
-        this.street = street;
+        this.street = street.toUpperCase();
         this.number = number;
-        this.complement = complement;
-        this.neighborhood = neighborhood;
-        this.city = city;
-        this.state = state;
+        this.complement = complement.toUpperCase();
+        this.neighborhood = neighborhood.toUpperCase();
+        this.city = city.toUpperCase();
+        this.state = state.toUpperCase();
         this.zipCode = cleanZipCode(zipCode);
-        this.countryCode = countryCode.toUpperCase();
+        this.country = country;
     }
 
-    private void validate(String street, String city, String state, String zipCode, String countryCode) {
+    private void validate(String street, String city, String state, String zipCode, Country country) {
+        Objects.requireNonNull(country, "O país do documento é obrigatório");
+
         if (isNullOrBlank(street) || isNullOrBlank(city) || isNullOrBlank(state) || isNullOrBlank(zipCode)) {
             throw new IllegalArgumentException("Campos obrigatórios do endereço não podem estar vazios.");
         }
 
         // Validação específica de CEP por país
-        if ("BR".equals(countryCode) && !zipCode.replaceAll("[^0-9]", "").matches("\\d{8}")) {
+        if ("BR".equals(country.getCodeAlpha2()) && !zipCode.replaceAll("[^0-9]", "").matches("\\d{8}")) {
             throw new IllegalArgumentException("CEP brasileiro deve conter 8 dígitos.");
         }
 
-        if ("US".equals(countryCode) && !zipCode.replaceAll("[^0-9]", "").matches("\\d{5}(-\\d{4})?")) {
+        if ("US".equals(country.getCodeAlpha2()) && !zipCode.replaceAll("[^0-9]", "").matches("\\d{5}(-\\d{4})?")) {
             throw new IllegalArgumentException("ZIP Code americano inválido.");
         }
     }
@@ -47,7 +52,7 @@ public class Address {
     }
 
     private boolean isNullOrBlank(String s) {
-        return s == null || s.isBlank();
+        return s == null || s.trim().isBlank();
     }
 
     public String getFullAddress() {

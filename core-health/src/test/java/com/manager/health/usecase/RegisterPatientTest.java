@@ -34,7 +34,7 @@ class RegisterPatientTest {
     @DisplayName("Deve registrar um paciente com sucesso e persistir no repositório")
     void shouldRegisterPatientSuccessfully() {
         // Arrange
-        String validCpf = "54280504031"; // Documento de teste
+        String validCpf = "50663102154"; // Documento de teste
         RegisterPatientRequest request = createValidRegisterRequest(validCpf);
 
         // Act
@@ -44,7 +44,7 @@ class RegisterPatientTest {
         var savedPatient = patientRepository.findByDocument(validCpf);
         assertTrue(savedPatient.isPresent(), "O paciente deveria ser salvo no repositório");
         assertEquals("Paciente Teste Unitario", savedPatient.get().getName());
-        assertEquals(validCpf, savedPatient.get().getDocument());
+        assertEquals(validCpf, savedPatient.get().getDocument().getRawValue());
     }
 
     @Test
@@ -52,7 +52,6 @@ class RegisterPatientTest {
     void shouldPublishPatientCreatedEvent() {
         // Arrange
         List<IDomainEvent> publishedEvents = new ArrayList<>();
-        // "Espiamos" o SimpleEventBus subscrevendo uma lista local
         simpleEventBus.subscribe(publishedEvents::add);
 
         String validCpf = "98765432100";
@@ -71,7 +70,6 @@ class RegisterPatientTest {
     @Test
     @DisplayName("Deve falhar ao tentar registrar paciente com documento inválido")
     void shouldFailWhenDocumentIsInvalid() {
-        // Arrange (CPF propositalmente inválido para acionar o BrazilDocumentValidator)
         String invalidCpf = "123";
         RegisterPatientRequest request = createValidRegisterRequest(invalidCpf);
 
@@ -84,7 +82,6 @@ class RegisterPatientTest {
         assertTrue(patientRepository.findByDocument(invalidCpf).isEmpty());
     }
 
-    // Método auxiliar para criar DTOs válidos de maneira limpa nos testes
     private RegisterPatientRequest createValidRegisterRequest(String document) {
         return new RegisterPatientRequest(
                 "Paciente Teste Unitario",

@@ -4,12 +4,12 @@ import com.manager.health.domain.model.Patient;
 import com.manager.health.domain.model.PatientResponse;
 import com.manager.health.domain.model.RegisterPatientRequest;
 import com.manager.health.domain.model.UpdatePatientRequest;
+import com.manager.shared.domain.enums.Country;
 import com.manager.shared.domain.model.IMapper;
 import com.manager.shared.domain.model.entity.Address;
 import com.manager.shared.domain.model.entity.Document;
 import com.manager.shared.domain.model.entity.Email;
 import com.manager.shared.domain.model.entity.Phone;
-import com.manager.shared.domain.model.validators.DocumentValidatorFactory;
 
 import java.time.LocalDate;
 
@@ -31,13 +31,12 @@ public class PatientMapper implements IMapper<Patient, PatientResponse, Register
         return new Patient(
             request.name(),
             LocalDate.parse(request.birthDate()),
-            new Document(request.documentValue(), request.documentCountry(),
-                    DocumentValidatorFactory.getValidator(request.documentCountry())),
+            new Document(request.documentValue(), Country.fromCodeOrDdi(request.documentCountry())),
             new Email(request.email()),
-            new Phone(request.phoneCountryCode(), request.phoneNumber()),
+            new Phone(request.phoneNumber(), Country.fromCodeOrDdi(request.phoneCountryCode())),
             new Address(request.street(), request.number(), request.complement(),
                     request.neighborhood(), request.city(), request.state(),
-                    request.zipCode(), request.countryCode()),
+                    request.zipCode(), Country.fromCodeOrDdi(request.countryCode())),
             true
         );
     }
@@ -45,10 +44,10 @@ public class PatientMapper implements IMapper<Patient, PatientResponse, Register
     @Override
     public void updateEntity(Patient entity, UpdatePatientRequest request) {
         Email email = new Email(request.email());
-        Phone phone = new Phone(request.phoneCountryCode(), request.phoneNumber());
+        Phone phone = new Phone(request.phoneNumber(), Country.fromCodeOrDdi(request.phoneCountryCode()));
         Address address = new Address(
                 request.street(), request.number(), request.complement(), request.neighborhood(),
-                request.city(), request.state(), request.zipCode(), request.countryCode()
+                request.city(), request.state(), request.zipCode(), Country.fromCodeOrDdi(request.countryCode())
         );
 
         entity.setName(request.name());
