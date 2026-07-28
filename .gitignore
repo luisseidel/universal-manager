@@ -5,3 +5,9 @@
 /entrypoints-cli/target/*
 /infra-storage-mem/target/*
 *.class
+.idea
+.idea/
+/core-audit/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+/core-audit/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+/core-audit/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+/core-audit/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst

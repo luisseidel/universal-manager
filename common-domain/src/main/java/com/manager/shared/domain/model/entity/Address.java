@@ -21,12 +21,12 @@ public class Address {
         validate(street, city, state, zipCode, country);
 
         this.street = street.toUpperCase();
-        this.number = number;
+        this.number = cleanNumbers(number);
         this.complement = complement.toUpperCase();
         this.neighborhood = neighborhood.toUpperCase();
         this.city = city.toUpperCase();
         this.state = state.toUpperCase();
-        this.zipCode = cleanZipCode(zipCode);
+        this.zipCode = cleanNumbers(zipCode);
         this.country = country;
     }
 
@@ -47,8 +47,8 @@ public class Address {
         }
     }
 
-    private String cleanZipCode(String zip) {
-        return zip.replaceAll("[^0-9]", "");
+    private String cleanNumbers(String number) {
+        return number.replaceAll("[^0-9]", "");
     }
 
     private boolean isNullOrBlank(String s) {
@@ -59,4 +59,35 @@ public class Address {
         return String.format("%s, %s - %s, %s/%s - %s", street, number, neighborhood, city, state, zipCode);
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public String getComplement() {
+        return complement;
+    }
+
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
 }

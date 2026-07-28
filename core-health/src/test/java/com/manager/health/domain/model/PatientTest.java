@@ -29,14 +29,37 @@ class PatientTest {
         Assertions.assertEquals("+55 (51) 99999-9999", patient.getPhone().getInternationalFormatted());
 
         Assertions.assertEquals("asd@asd.com", patient.getEmail().getValue());
-
-        Assertions.assertEquals("asd@asd.com", patient.getAddress().getFullAddress());
     }
 
     @Test
     void shouldCreateValidPatient_usingSetters_andValidateWithGetters() {
-        Patient patient = createPatient("nome paciente", LocalDate.now());
+        LocalDate dataNascimento = LocalDate.now();
 
+        Patient patient = createPatient("nome paciente", dataNascimento);
+        patient.setName("Nome mudado");
+        patient.setBirthDate(dataNascimento);
+        patient.setDocument(new Document("651+255+780-88", Country.BRAZIL));
+        patient.setEmail(new Email("asd.asd@gmail.com"));
+        patient.setPhone(new Phone("51999995555", Country.BRAZIL));
+        patient.setAddress(new Address("street", "1asd", "complement", "neighborhood", "city", "state", "95900-000", Country.BRAZIL));
+        patient.setActive(false);
+
+        Assertions.assertNotNull(patient);
+        Assertions.assertEquals("Nome mudado", patient.getName(), "Nome deve ser igual ao setado");
+        Assertions.assertEquals(dataNascimento, patient.getBirthDate(), "Data de nascimento deve ser igual ao setado");
+        Assertions.assertEquals("65125578088", patient.getDocument().getRawValue(), "Formatador deve limpar e deixar somente números");
+        Assertions.assertEquals("651.255.780-88", patient.getDocument().getFormatted(), "Formatador deve formatar documento conforme país");
+        Assertions.assertEquals("asd.asd@gmail.com", patient.getEmail().getValue());
+        Assertions.assertEquals("5551999995555", patient.getPhone().getInternationalRaw(), "Deve retornar númeração internacional do telefone sem formatação");
+        Assertions.assertEquals("+55 (51) 99999-5555", patient.getPhone().getInternationalFormatted(), "Deve retornar númeração internacional do telefone com formatação");
+        Assertions.assertEquals("STREET", patient.getAddress().getStreet(), "Deve retornar uppercase");
+        Assertions.assertEquals("1", patient.getAddress().getNumber(), "Ao enviar qualquer coisa, deve retornar somente os números");
+        Assertions.assertEquals("COMPLEMENT", patient.getAddress().getComplement(), "Deve retornar uppercase");
+        Assertions.assertEquals("NEIGHBORHOOD", patient.getAddress().getNeighborhood(), "Deve retornar uppercase");
+        Assertions.assertEquals("CITY", patient.getAddress().getCity(), "Deve retornar uppercase");
+        Assertions.assertEquals("STATE", patient.getAddress().getState(), "Deve retornar uppercase");
+        Assertions.assertEquals("95900000", patient.getAddress().getZipCode(), "Deve remover qualquer caractere não numérico");
+        Assertions.assertEquals("BR", patient.getAddress().getCountry().getCodeAlpha2());
     }
 
     @Test

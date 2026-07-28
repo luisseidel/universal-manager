@@ -7,7 +7,7 @@ public class Email {
 
     public Email(String value) {
         if (value == null || !value.matches(REGEX_EMAIL)) {
-            throw new IllegalArgumentException("E-mail inválido.");
+            throw new IllegalArgumentException("E-mail inválido");
         }
         this.value = value.toLowerCase();
     }

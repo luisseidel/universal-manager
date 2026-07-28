@@ -17,7 +17,7 @@ public class Phone {
         this.validator = PhoneValidatorFactory.getValidator(country);
 
         if (!validator.isValid(number)) {
-            throw new IllegalArgumentException("Número de telefone inválido para o DDI +" + country);
+            throw new IllegalArgumentException("Número de telefone inválido para o DDI +" + country.getPhoneDdi());
         }
 
         this.rawNumber = validator.clean(number);
@@ -33,5 +33,13 @@ public class Phone {
 
     public String getInternationalFormatted() {
         return "+" + country.getPhoneDdi() + " " + getFormatted();
+    }
+
+    public String getRawNumber() {
+        return rawNumber;
+    }
+
+    public Country getCountry() {
+        return country;
     }
 }

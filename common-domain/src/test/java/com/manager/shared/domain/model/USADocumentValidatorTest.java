@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class USADocumentTest {
+class USADocumentValidatorTest {
 
     @Test
     @DisplayName("Deve validar e formatar um SSN americano corretamente")
