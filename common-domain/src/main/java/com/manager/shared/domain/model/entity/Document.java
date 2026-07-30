@@ -21,6 +21,10 @@ public class Document {
         this.value = validator.clean(value);
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
     public String getRawValue() { return value; }
 
     public String getFormatted() {

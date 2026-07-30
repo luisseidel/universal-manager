@@ -1,6 +1,10 @@
 package com.manager.shared.domain.model.dto;
 
 public record AddressDTO(
-        String street, String neighborhood, String city, String state, boolean found
+    String street,
+    String neighborhood,
+    String city,
+    String state,
+    boolean found
 ) {
 }

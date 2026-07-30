@@ -26,17 +26,17 @@ public class FakePatientRepository implements IPatientRepository {
     }
 
     @Override
-    public PagedResponse<Patient> findPaged(ISpecification<Patient> spec, int page, int size) {
-        int skip = (page - 1) * size;
+    public PagedResponse<Patient> findPaged(ISpecification<Patient> spec, int page, int pageSize) {
+        int skip = (page - 1) * pageSize;
         long total = database.values().stream().filter(spec::isSatisfiedBy).count();
 
         List<Patient> result = database.values().stream()
                 .filter(spec::isSatisfiedBy)
                 .skip(skip)
-                .limit(size)
+                .limit(pageSize)
                 .toList();
 
-        return PagedResponse.of(result, page, size, total);
+        return PagedResponse.of(result, page, pageSize, total);
     }
 
     @Override

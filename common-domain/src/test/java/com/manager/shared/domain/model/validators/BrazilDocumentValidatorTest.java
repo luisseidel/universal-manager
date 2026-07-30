@@ -1,6 +1,5 @@
-package com.manager.shared.domain.model;
+package com.manager.shared.domain.model.validators;
 
-import com.manager.shared.domain.model.validators.BrazilDocumentValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

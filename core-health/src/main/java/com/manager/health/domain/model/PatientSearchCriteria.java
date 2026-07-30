@@ -5,6 +5,6 @@ public record PatientSearchCriteria(
     String documentNumber,
     Boolean active,
     int page,
-    int size
+    int pageSize
 ) {
 }

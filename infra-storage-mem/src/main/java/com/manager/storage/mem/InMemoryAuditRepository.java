@@ -9,7 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class InMemoryAuditRepository implements IAuditRepository {
 
@@ -21,19 +20,19 @@ public class InMemoryAuditRepository implements IAuditRepository {
     }
 
     @Override
-    public PagedResponse<AuditLog> findPaged(ISpecification<AuditLog> spec, int page, int size) {
+    public PagedResponse<AuditLog> findPaged(ISpecification<AuditLog> spec, int page, int pageSize) {
         List<AuditLog> filtered = database.values().stream()
                 .filter(spec::isSatisfiedBy)
-                .collect(Collectors.toList());
+                .toList();
 
         long total = filtered.size();
 
         List<AuditLog> paged = filtered.stream()
-                .skip((long) (page - 1) * size)
-                .limit(size)
-                .collect(Collectors.toList());
+                .skip((long) (page - 1) * pageSize)
+                .limit(pageSize)
+                .toList();
 
-        return PagedResponse.of(paged, page, size, total);
+        return PagedResponse.of(paged, page, pageSize, total);
     }
 
     @Override
@@ -60,6 +59,6 @@ public class InMemoryAuditRepository implements IAuditRepository {
     public List<AuditLog> findByEventType(String type) {
         return database.values().stream()
                 .filter(log -> log.getEventType().equalsIgnoreCase(type))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

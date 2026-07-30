@@ -22,7 +22,7 @@ public class ListPatients {
     }
 
     public PagedResponse<PatientResponse> execute(PatientSearchCriteria criteria) {
-        ISpecification<Patient> spec = (patient) -> true;
+        ISpecification<Patient> spec = patient -> true;
 
         if (criteria.name() != null && !criteria.name().isBlank()) {
             spec = spec.and(new PatientNameLikeSpecification(criteria.name()));
@@ -36,7 +36,7 @@ public class ListPatients {
             spec = spec.and(new PatientDocumentSpecification(criteria.documentNumber()));
         }
 
-        PagedResponse<Patient> paged = repository.findPaged(spec, criteria.page(), criteria.size());
+        PagedResponse<Patient> paged = repository.findPaged(spec, criteria.page(), criteria.pageSize());
 
         return paged.map(mapper::toResponse);
     }

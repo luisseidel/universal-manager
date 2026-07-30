@@ -1,4 +1,4 @@
-package com.manager.shared.domain.model;
+package com.manager.shared.domain.model.validators;
 
 import com.manager.shared.domain.enums.Country;
 import com.manager.shared.domain.model.entity.Document;

@@ -1,4 +1,4 @@
-package com.manager.shared.domain.model;
+package com.manager.shared.domain.model.validators;
 
 import com.manager.shared.domain.enums.Country;
 import com.manager.shared.domain.model.entity.Phone;
@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class PhoneTest {
+class BrazilPhoneValidatorTest {
 
     @Test
     @DisplayName("Deve validar e formatar telefone dos EUA corretamente")
     void shouldValidateUSAPhone() {
         // ARRANGE
         String ddi = "1";
-        String input = "2025550123"; // Washington DC area code
+        String input = "2025550123";
 
         // ACT
         Phone phone = new Phone(input, Country.fromCodeOrDdi(ddi));
@@ -31,10 +31,11 @@ class PhoneTest {
     void shouldRejectInvalidUSAPhone() {
         // ARRANGE
         String ddi = "1";
-        String invalidInput = "1025550123"; // Começa com 1
+        String invalidInput = "1025550123";
+        Country country = Country.fromCodeOrDdi(ddi);
 
         // ACT & ASSERT
-        assertThrows(IllegalArgumentException.class, () -> new Phone(invalidInput, Country.fromCodeOrDdi(ddi)));
+        assertThrows(IllegalArgumentException.class, () -> new Phone(invalidInput, country));
     }
 
 }

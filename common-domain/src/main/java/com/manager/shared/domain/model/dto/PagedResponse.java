@@ -11,8 +11,8 @@ public record PagedResponse<T>(
         boolean hasNext
 ) {
 
-    public static <T> PagedResponse<T> of(List<T> items, int currentPage, int size, long totalElements) {
-        int totalPages = (int) Math.ceil((double) totalElements / size);
+    public static <T> PagedResponse<T> of(List<T> items, int currentPage, int pageSize, long totalElements) {
+        int totalPages = (int) Math.ceil((double) totalElements / pageSize);
         boolean hasNext = currentPage < totalPages;
         return new PagedResponse<T>(items, currentPage, totalElements, totalPages, hasNext);
     }

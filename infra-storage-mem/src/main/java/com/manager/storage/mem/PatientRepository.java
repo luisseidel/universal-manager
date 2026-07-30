@@ -26,23 +26,22 @@ public class PatientRepository implements IPatientRepository {
     }
 
     @Override
-    public PagedResponse<Patient> findPaged(ISpecification<Patient> spec, int page, int size) {
-        int skip = (page - 1) * size;
+    public PagedResponse<Patient> findPaged(ISpecification<Patient> spec, int page, int pageSize) {
+        int skip = (page - 1) * pageSize;
         long total = database.values().stream().filter(spec::isSatisfiedBy).count();
 
         List<Patient> result = database.values().stream()
                 .filter(spec::isSatisfiedBy)
                 .skip(skip)
-                .limit(size)
+                .limit(pageSize)
                 .toList();
 
-        return PagedResponse.of(result, page, size, total);
+        return PagedResponse.of(result, page, pageSize, total);
     }
 
     @Override
     public void save(Patient patient) {
         database.put(patient.getId(), patient);
-        System.out.println("[DB Log] Paciente salvo com sucesso: " + patient.getName());
     }
 
     @Override
