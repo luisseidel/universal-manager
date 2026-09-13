@@ -12,9 +12,9 @@ public class BrazilDocumentValidator implements IDocumentValidator {
     private static final String REGEX_CNPJ = "^[A-Z0-9]{12}[0-9]{2}$";
     private static final String REGEX_FORMAT_CNPJ = "([A-Z0-9]{2})([A-Z0-9]{3})([A-Z0-9]{3})([A-Z0-9]{4})([0-9]{2})";
 
-    private static final String REGEX_CPF = "^[A-Z0-9]{9}[0-9]{2}$";
+    private static final String REGEX_CPF = "^[0-9]{11}$";
     private static final String REGEX_CPF_REPEATED_DIGITS = "(\\w)\\1{10}";
-    private static final String REGEX_FORMAT_CPF = "([A-Z0-9]{3})([A-Z0-9]{3})([A-Z0-9]{3})([0-9]{2})";
+    private static final String REGEX_FORMAT_CPF = "([0-9]{3})([0-9]{3})([0-9]{3})([0-9]{2})";
 
     @Override
     public boolean isValid(String value) {
@@ -42,7 +42,6 @@ public class BrazilDocumentValidator implements IDocumentValidator {
     }
 
     private boolean isValidCpf(String cpf) {
-        // 1. Validar formato básico e evitar sequências óbvias (ex: 11111111111)
         if (!cpf.matches(REGEX_CPF) || cpf.matches(REGEX_CPF_REPEATED_DIGITS)) return false;
 
         String base = cpf.substring(0, 9);

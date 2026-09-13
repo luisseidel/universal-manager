@@ -11,10 +11,6 @@ public class USADocumentValidator implements IDocumentValidator {
     public boolean isValid(String value) {
         String cleaned = clean(value);
 
-        if (cleaned == null || !cleaned.matches(REGEX_DIGITS)) {
-            return false;
-        }
-
         int area = Integer.parseInt(cleaned.substring(0, 3));
         int group = Integer.parseInt(cleaned.substring(3, 5));
         int serial = Integer.parseInt(cleaned.substring(5, 9));

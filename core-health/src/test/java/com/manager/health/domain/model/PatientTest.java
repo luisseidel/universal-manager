@@ -65,6 +65,7 @@ class PatientTest {
     @Test
     void shouldNotCreatePatient_withNullName() {
         LocalDate birthDate = LocalDate.now();
+
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> createPatient(null, birthDate));
 
         Assertions.assertEquals("Name cannot be blank or null!", exception.getMessage());

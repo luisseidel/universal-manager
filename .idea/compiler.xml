@@ -7,11 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="common-infrastructure" />
+        <module name="infra-storage-mem" />
+        <module name="common-domain" />
+        <module name="core-audit" />
         <module name="entrypoints-cli" />
         <module name="core-health" />
         <module name="core-inventory" />
-        <module name="infra-storage-mem" />
-        <module name="common-domain" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

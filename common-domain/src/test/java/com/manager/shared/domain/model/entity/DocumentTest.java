@@ -15,6 +15,7 @@ class DocumentTest {
 
         Assertions.assertNotNull(document);
         Assertions.assertEquals(brDocNumber, document.getRawValue());
+        Assertions.assertEquals("BR", document.getCountry().getCodeAlpha2());
         Assertions.assertEquals("506.631.021-54", document.getFormatted());
     }
 

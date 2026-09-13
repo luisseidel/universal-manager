@@ -5,6 +5,7 @@ import java.util.Arrays;
 public enum Country {
 
     UNITED_STATES("1", "US", "United States"),
+    UNITED_KINGDOM("44", "UK", "United Kingdom"),
     BRAZIL("55", "BR", "Brasil"),
     ;
 

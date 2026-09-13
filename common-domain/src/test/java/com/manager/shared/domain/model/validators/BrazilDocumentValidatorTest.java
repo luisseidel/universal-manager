@@ -1,100 +1,126 @@
 package com.manager.shared.domain.model.validators;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class BrazilDocumentValidatorTest {
 
     private final BrazilDocumentValidator validator = new BrazilDocumentValidator();
 
     @Test
-    @DisplayName("Deve validar e formatar um CPF numérico tradicional válido")
-    void deveValidarCpfNumericoTradicional() {
-        // 1. ARRANGE
-        String cpfEntrada = "123.456.789-09";
+    void clean_shouldReturnBlankString_whenNullArg() {
+        String docNumber = null;
 
-        // 2. ACT
-        boolean ehValido = validator.isValid(cpfEntrada);
-        String formatado = validator.format(cpfEntrada);
-        String limpo = validator.clean(cpfEntrada);
+        String result = validator.clean(docNumber);
 
-        // 3. ASSERT
-        assertTrue(ehValido, "O CPF deveria ser considerado válido");
-        assertEquals("123.456.789-09", formatado);
-        assertEquals("12345678909", limpo);
+        Assertions.assertEquals("", result);
     }
 
     @Test
-    @DisplayName("Deve invalidar CPF com dígitos verificadores incorretos")
-    void deveDetectarCpfComDigitoErrado() {
-        // 1. ARRANGE
-        String cpfIncorreto = "12345678900"; // Os dígitos corretos seriam 09
+    void clean_shouldReturnAlphanumeric_whenInvalidCharacters() {
+        String cpf = "12345678900=asd";
+        String cnpj = "asd12365as4d00=_-!@#";
 
-        // 2. ACT
-        boolean ehValido = validator.isValid(cpfIncorreto);
+        String cleanedCPF = validator.clean(cpf);
+        String cleanedCNPJ = validator.clean(cnpj);
 
-        // 3. ASSERT
-        assertFalse(ehValido, "O validador deveria rejeitar dígitos verificadores errados");
+        Assertions.assertEquals("12345678900ASD", cleanedCPF);
+        Assertions.assertEquals("ASD12365AS4D00", cleanedCNPJ);
     }
 
     @Test
-    @DisplayName("Deve invalidar sequências repetidas (Invariante de negócio)")
-    void deveInvalidarSequenciasRepetidas() {
-        // ARRANGE
-        String sequencia = "11111111111";
+    void isValid_shouldReturnTrue_whenValidCpfCnpj() {
+        String cpf = "12345678909";
+        String cnpj = "02437430000109";
+        String cnpjAlpha = "M7K2JXWAYUX011";
 
-        // ACT & ASSERT
-        assertFalse(validator.isValid(sequencia), "Sequências repetidas não são CPFs reais");
-    }
+        boolean resultCpf = validator.isValid(cpf);
+        boolean resultCnpj = validator.isValid(cnpj);
+        boolean resultCnpjAlpha = validator.isValid(cnpjAlpha);
 
-    //TESTES CNPJ
-
-    @Test
-    @DisplayName("Deve validar e formatar um CNPJ alfanumerico válido")
-    void deveValidarCnpjAlfanumerico() {
-        // 1. ARRANGE
-        String cnpjEntrada = "M7.K2J.XWA/YUX0-11";
-
-        // 2. ACT
-        boolean ehValido = validator.isValid(cnpjEntrada);
-        String formatado = validator.format(cnpjEntrada);
-        String limpo = validator.clean(cnpjEntrada);
-
-        // 3. ASSERT
-        assertTrue(ehValido, "O CNPJ deveria ser considerado válido");
-        assertEquals("M7.K2J.XWA/YUX0-11", formatado);
-        assertEquals("M7K2JXWAYUX011", limpo);
+        Assertions.assertTrue(resultCpf);
+        Assertions.assertTrue(resultCnpj);
+        Assertions.assertTrue(resultCnpjAlpha);
     }
 
     @Test
-    @DisplayName("Deve validar e formatar um CNPJ numérico tradicional válido")
-    void deveValidarCnpjNumericoTradicional() {
-        // 1. ARRANGE
-        String cnpjEntrada = "02.437.430/0001-09";
+    void isValid_shouldReturnFalse_whenInvalidDocNumber() {
+        String docNumber = "CMCMCMASDA!@#!@#22231321213132123";
 
-        // 2. ACT
-        boolean ehValido = validator.isValid(cnpjEntrada);
-        String formatado = validator.format(cnpjEntrada);
-        String limpo = validator.clean(cnpjEntrada);
+        boolean result = validator.isValid(docNumber);
 
-        // 3. ASSERT
-        assertTrue(ehValido, "O CNPJ deveria ser considerado válido");
-        assertEquals("02.437.430/0001-09", formatado);
-        assertEquals("02437430000109", limpo);
+        Assertions.assertFalse(result);
     }
 
     @Test
-    @DisplayName("Deve invalidar CNPJ com dígitos verificadores incorretos")
-    void deveDetectarCnpjComDigitoErrado() {
-        // 1. ARRANGE
-        String cnpjIncorreto = "92909389000112"; //o dv correto é 00
+    @DisplayName("Deve retornar false quando CPF limpo tem 11 caracteres mas contém letras")
+    void isValid_shouldReturnFalse_whenCpfHas11CharsButContainsLetters() {
+        String cpfWithLetters = "123.456.789-AB";
 
-        // 2. ACT
-        boolean ehValido = validator.isValid(cnpjIncorreto);
+        boolean result = validator.isValid(cpfWithLetters);
 
-        // 3. ASSERT
-        assertFalse(ehValido, "O validador deveria rejeitar dígitos verificadores errados");
+        Assertions.assertFalse(result, "CPF com 11 caracteres contendo letras deve ser inválido");
+    }
+
+    @Test
+    @DisplayName("Deve retornar false quando CNPJ limpo tem 14 caracteres mas formato é inválido")
+    void isValid_shouldReturnFalse_whenCnpjHas14CharsWithInvalidPattern() {
+        String cnpjInvalidPattern = "ABCDEFGHIJKLMN";
+
+        boolean result = validator.isValid(cnpjInvalidPattern);
+
+        Assertions.assertFalse(result, "CNPJ com 14 caracteres fora do padrão deve ser inválido");
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenInvalidCpfCnpj() {
+        String cpf = "123.456.789-31";
+        String cnpj = "02.437.430/0001-11";
+        String cnpjZero = "00.000.000/0000-00";
+        String cnpjAlpha = "M7.K2J.XWA/YUX0-cc";
+        String sequence = "11111111111";
+
+        boolean resultCpf = validator.isValid(cpf);
+        boolean resultCnpj = validator.isValid(cnpj);
+        boolean resultCnpjZero = validator.isValid(cnpjZero);
+        boolean resultCnpjAlpha = validator.isValid(cnpjAlpha);
+        boolean resultSequence = validator.isValid(sequence);
+
+        Assertions.assertFalse(resultCpf);
+        Assertions.assertFalse(resultCnpj);
+        Assertions.assertFalse(resultCnpjZero);
+        Assertions.assertFalse(resultCnpjAlpha);
+        Assertions.assertFalse(resultSequence);
+    }
+
+    @Test
+    void format_shouldReturnFormatted_whenValidCpfCnpj() {
+        String cpf = "12345678909";
+        String cnpj = "02437430000109";
+        String cnpjAlpha = "M7K2JXWAYUX011";
+
+        String cpfFormatted = validator.format(cpf);
+        String cnpjFormatted = validator.format(cnpj);
+        String cnpjAlphaFormatted = validator.format(cnpjAlpha);
+
+        Assertions.assertEquals("123.456.789-09", cpfFormatted);
+        Assertions.assertEquals("02.437.430/0001-09", cnpjFormatted);
+        Assertions.assertEquals("M7.K2J.XWA/YUX0-11", cnpjAlphaFormatted);
+    }
+
+    @Test
+    void format_shouldReturnCleaned_whenInvalidCpfCnpj() {
+        String cpf = "12345678909ASD!@";
+        String cnpj = "02437430000109CC@@";
+        String cnpjAlpha = "M7K2JXWAYUX011 cascc";
+
+        String cpfFormatted = validator.format(cpf);
+        String cnpjFormatted = validator.format(cnpj);
+        String cnpjAlphaFormatted = validator.format(cnpjAlpha);
+
+        Assertions.assertEquals("12345678909ASD", cpfFormatted);
+        Assertions.assertEquals("02437430000109CC", cnpjFormatted);
+        Assertions.assertEquals("M7K2JXWAYUX011CASCC", cnpjAlphaFormatted);
     }
 }

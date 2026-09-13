@@ -1,41 +1,99 @@
 package com.manager.shared.domain.model.validators;
 
 import com.manager.shared.domain.enums.Country;
-import com.manager.shared.domain.model.entity.Phone;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class USAPhoneValidatorTest {
 
     @Test
-    @DisplayName("Deve validar e formatar telefone dos EUA corretamente")
-    void shouldValidateUSAPhone() {
-        // ARRANGE
+    @DisplayName("Should return empty string when a null phone")
+    void clean_shouldReturnEmptyString_withNullPhone() {
+        //Arrange
         String ddi = "1";
-        String input = "2025550123"; // Washington DC area code
+        String nullPhoneNumber = null;
+        var country = Country.fromCodeOrDdi(ddi);
+        var validator = PhoneValidatorFactory.getValidator(country);
 
-        // ACT
-        Phone phone = new Phone(input, Country.fromCodeOrDdi(ddi));
+        //Act
+        String result = validator.clean(nullPhoneNumber);
 
-        // ASSERT
-        assertEquals("12025550123", phone.getInternationalRaw());
-        assertEquals("(202) 555-0123", phone.getFormatted());
-        assertEquals("+1 (202) 555-0123", phone.getInternationalFormatted());
+        //Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals("", result);
     }
 
     @Test
-    @DisplayName("Deve rejeitar telefone USA iniciando com 0 ou 1 no código de área")
-    void shouldRejectInvalidUSAPhone() {
-        // ARRANGE
+    void clean_shouldReturnCleanPhone_withValidArgs() {
+        //Arrange
         String ddi = "1";
-        String invalidInput = "1025550123"; // Começa com 1
-        Country country = Country.fromCodeOrDdi(ddi);
+        String number = "5137487288aaa";
+        var country = Country.fromCodeOrDdi(ddi);
+        var validator = PhoneValidatorFactory.getValidator(country);
 
-        // ACT & ASSERT
-        assertThrows(IllegalArgumentException.class, () -> new Phone(invalidInput, country));
+        //Act
+        String result = validator.clean(number);
+
+        //Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals("5137487288", result);
+    }
+
+    @Test
+    void isValid_shouldReturnTrue_whenValidNumber() {
+        //Arrange
+        String number = "5552234567";
+        var country = Country.fromCodeOrDdi("1");
+        var validator = PhoneValidatorFactory.getValidator(country);
+
+        //Act
+        boolean result = validator.isValid(number);
+
+        //Assert
+        Assertions.assertTrue(result);
+    }
+
+    @Test
+    void isValid_shouldReturnFalse_whenInvalidNumber() {
+        //Arrange
+        String number = "5199999888888";
+        var country = Country.fromCodeOrDdi("1");
+        var validator = PhoneValidatorFactory.getValidator(country);
+
+        //Act
+        boolean result = validator.isValid(number);
+
+        //Assert
+        Assertions.assertFalse(result);
+    }
+
+    @Test
+    void format_shouldReturnFormatted_whenValidNumber() {
+        //Arrange
+        String number = "5552234567";
+        var country = Country.fromCodeOrDdi("1");
+        var validator = PhoneValidatorFactory.getValidator(country);
+
+        //Act
+        String formatted = validator.format(number);
+
+        //Assert
+        Assertions.assertEquals("(555) 223-4567", formatted);
+    }
+
+    @Test
+    void format_shouldReturnCleanedNumber_whenWrongNumberType() {
+        //Arrange
+        String number = "51a374877222222s";
+        var country = Country.fromCodeOrDdi("1");
+        var validator = PhoneValidatorFactory.getValidator(country);
+
+        //Act
+        String formatted = validator.format(number);
+
+        //Assert
+        Assertions.assertEquals("51374877222222", formatted);
     }
 
 }
