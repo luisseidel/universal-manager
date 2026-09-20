@@ -4,6 +4,8 @@ import com.manager.shared.domain.model.entity.Address;
 import com.manager.shared.domain.model.entity.Document;
 import com.manager.shared.domain.model.entity.Email;
 import com.manager.shared.domain.model.entity.Phone;
+import com.manager.shared.domain.validation.DomainValidationException;
+import com.manager.shared.domain.validation.ValidationNotification;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -40,11 +42,12 @@ public class Patient {
     }
 
     private void validate() {
-        if (name == null || name.trim().isBlank()) {
-            throw new IllegalArgumentException("Name cannot be blank or null!");
-        }
-        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Birthdate cannot be null or in the future!");
+        ValidationNotification notification = new ValidationNotification();
+        notification.addErrorIf(name == null || name.trim().isBlank(), "Name cannot be blank or null!");
+        notification.addErrorIf(birthDate == null || birthDate.isAfter(LocalDate.now()), "Birthdate cannot be null or in the future!");
+
+        if (notification.hasErrors()) {
+            throw new DomainValidationException(notification);
         }
     }
 

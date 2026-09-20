@@ -1,11 +1,13 @@
 package com.manager.shared.domain.model.entity;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class EmailTest {
 
     @Test
+    @DisplayName("Constructor should create with valid parameter")
     void constructor_shouldCreate_withValidParameter() {
         String e = "asd@asd.com";
 
@@ -16,6 +18,7 @@ class EmailTest {
     }
 
     @Test
+    @DisplayName("Constructor should not create with null value")
     void constructor_shouldNotCreate_withNullValue() {
         String nullEmail = null;
 
@@ -26,6 +29,7 @@ class EmailTest {
     }
 
     @Test
+    @DisplayName("Constructor should not create entity with invalid parameter")
     void constructor_shouldNotCreate_withInvalidParameter() {
         String invalid = "@asdc.co@dasl.c.bn";
 

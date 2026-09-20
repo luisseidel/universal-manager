@@ -2,11 +2,13 @@ package com.manager.shared.domain.model.entity;
 
 import com.manager.shared.domain.enums.Country;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class DocumentTest {
 
     @Test
+    @DisplayName("Constructor should create with valid parameters")
     void constructor_shouldCreate_withValidParameters() {
         String brDocNumber = "50663102154";
         Country country = Country.BRAZIL;
@@ -20,6 +22,7 @@ class DocumentTest {
     }
 
     @Test
+    @DisplayName("Constructor should throw nullpointer with null country")
     void constructor_shouldThrowNullpointer_withNullCountry() {
         String brDocNumber = "50663102154";
         Country country = null;
@@ -33,6 +36,7 @@ class DocumentTest {
     }
 
     @Test
+    @DisplayName("Constructor should throw illegal argument exception with null country")
     void constructor_shouldThrowIllegalArgument_withNullCountry() {
         String brDocNumber = null;
         Country country = Country.BRAZIL;

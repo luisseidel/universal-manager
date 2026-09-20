@@ -9,6 +9,7 @@ import java.util.List;
 class PagedResponseTest {
 
     @Test
+    @DisplayName("Constructor should create paged response, with valid parameters")
     void constructor_shouldCreatePagedResponse_withValidParameters() {
         List<Object> list = List.of(new Object());
         int currentPage = 1;
@@ -27,6 +28,7 @@ class PagedResponseTest {
     }
 
     @Test
+    @DisplayName("Of should create paged response, with valid parameters")
     void of_shouldCreatePagedResponse_withValidParameters() {
         List<Object> list = List.of(new Object());
         int currentPage = 1;
@@ -44,6 +46,7 @@ class PagedResponseTest {
     }
 
     @Test
+    @DisplayName("Of should create paged response with bigger current page")
     void of_shouldCreatePagedResponse_withBiggerCurrentPage() {
         List<Object> list = List.of(new Object());
         int currentPage = 2;
@@ -61,7 +64,7 @@ class PagedResponseTest {
     }
 
     @Test
-    @DisplayName("Deve mapear os itens de T para R preservando os metadados de paginação")
+    @DisplayName("Map should map itens from T to R preserving pagination metadata")
     void map_shouldTransformItemsAndPreservePaginationMetadata_withValidList() {
         List<Integer> initialItems = List.of(1, 2, 3);
         PagedResponse<Integer> originalPage = PagedResponse.of(initialItems, 1, 3, 10);
@@ -79,7 +82,7 @@ class PagedResponseTest {
     }
 
     @Test
-    @DisplayName("Deve funcionar corretamente ao mapear uma lista vazia")
+    @DisplayName("Map should work correctly with empty List")
     void map_shouldWork_withEmptyList() {
         List<Integer> list = List.of();
 
@@ -94,7 +97,7 @@ class PagedResponseTest {
     }
 
     @Test
-    @DisplayName("Deve lançar exceção quando o mapper for nulo")
+    @DisplayName("Map should throw exception when null mapper")
     void map_shouldThrowException_whenMapperIsNull() {
         List<Integer> list = List.of(1, 2);
 

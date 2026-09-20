@@ -1,11 +1,13 @@
 package com.manager.shared.domain.model.dto;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class AddressDTOTest {
 
     @Test
+    @DisplayName("Constructor should create entity with valid parameters")
     void constructor_shouldCreate_withValidParameters() {
         String street = "street";
         String neighborhood = "neighborhood";

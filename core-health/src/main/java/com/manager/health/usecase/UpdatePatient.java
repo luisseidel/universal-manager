@@ -28,14 +28,14 @@ public class UpdatePatient {
                 () -> new IllegalArgumentException("Paciente não encontrado!")
         );
 
-        ValidationNotification validationNotification = new ValidationNotification();
+        ValidationNotification notification = new ValidationNotification();
 
         try {
             mapper.updateEntity(existing, request);
             repository.update(existing);
         } catch (Exception e) {
-            validationNotification.addError(e.getMessage());
-            throw new DomainValidationException(validationNotification.getErrorMessage());
+            notification.addError(e.getMessage());
+            throw new DomainValidationException(notification.getErrors());
         }
 
     }

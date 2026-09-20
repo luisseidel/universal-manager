@@ -15,6 +15,7 @@ class USADocumentValidatorTest {
     private final USADocumentValidator validator = new USADocumentValidator();
 
     @Test
+    @DisplayName("Clean should return a blank string when null is passed")
     void clean_shouldReturnBlankString_whenNullArg() {
         String docNumber = null;
 
@@ -24,6 +25,7 @@ class USADocumentValidatorTest {
     }
 
     @Test
+    @DisplayName("Clean should return numeric when invalid chars is passed")
     void clean_shouldReturnNumeric_whenIvalidChars() {
         String docNumber = "12345678900=asd";
 
@@ -33,6 +35,7 @@ class USADocumentValidatorTest {
     }
 
     @Test
+    @DisplayName("Is Valid should return false when invalid area code is passed")
     void isValid_shouldReturnFalse_whenInvalidArea() {
         String invalidSSNArea = "902006789";
         String invalidSSNArea2 = "000006789";
@@ -48,7 +51,7 @@ class USADocumentValidatorTest {
     }
 
     @Test
-    @DisplayName("Deve validar e formatar um SSN americano corretamente")
+    @DisplayName("Should validate and format a SSN correctly")
     void constructor_shouldValidateAndFormatSSN_whenValidNumber() {
         // ARRANGE
         String input = "123456789";
@@ -62,7 +65,7 @@ class USADocumentValidatorTest {
     }
 
     @Test
-    @DisplayName("Deve invalidar SSN com grupo 00")
+    @DisplayName("Should invalidate a SSN with group 00")
     void constructor_shouldInvalidateSSN_whenZeroGroup() {
         // ARRANGE
         String invalidSsn = "123006789";
@@ -76,7 +79,8 @@ class USADocumentValidatorTest {
     }
 
     @Test
-    void format_shouldReturn_whenInvalidLength() {
+    @DisplayName("Format should return equal number when invalid length")
+    void format_shouldReturnEqualNumber_whenInvalidLength() {
         String docNumber = "12344455667788";
 
         String result = validator.format(docNumber);

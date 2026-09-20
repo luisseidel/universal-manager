@@ -2,11 +2,12 @@ package com.manager.shared.domain.model.entity;
 
 import com.manager.shared.domain.enums.Country;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class AddressTest {
 
-    @Test
+    @Test@DisplayName("Constructor should create entity with valid Brazilian parameters")
     void constructor_shouldCreate_withValidBrazilianParameters() {
         String street = "street";
         String number = "1";
@@ -33,6 +34,7 @@ class AddressTest {
     }
 
     @Test
+    @DisplayName("Constructor should create entity with valid US parameters")
     void constructor_shouldCreate_withValidUSParameters() {
         String street = "street";
         String number = "1";
@@ -59,6 +61,7 @@ class AddressTest {
     }
 
     @Test
+    @DisplayName("Constructor should throw nullpointer with null country")
     void constructor_shouldThrowNullPointer_withNullCountry() {
         String street = null;
         String number = "1";
@@ -78,6 +81,7 @@ class AddressTest {
     }
 
     @Test
+    @DisplayName("Constructor should throw illegal argument exception with null street")
     void constructor_shouldThrowIllegalArgument_withNullStreet() {
         String street = null;
         String number = "1";
@@ -97,6 +101,7 @@ class AddressTest {
     }
 
     @Test
+    @DisplayName("Constructor should throw illegal argument exception with null city")
     void constructor_shouldThrowIllegalArgument_withNullCity() {
         String street = "street";
         String number = "1";
@@ -116,6 +121,7 @@ class AddressTest {
     }
 
     @Test
+    @DisplayName("Constructor should throw illegal argument with null state")
     void constructor_shouldThrowIllegalArgument_withNullState() {
         String street = "street";
         String number = "1";
@@ -135,6 +141,7 @@ class AddressTest {
     }
 
     @Test
+    @DisplayName("Constructor should throw illegal argument exception with null zip")
     void constructor_shouldThrowIllegalArgument_withNullZip() {
         String street = "street";
         String number = "1";
@@ -154,6 +161,7 @@ class AddressTest {
     }
 
     @Test
+    @DisplayName("Constructor should throw illegal argument exception with wrong BR Zip code")
     void constructor_shouldThrowIllegalArgument_withWrongBRZipCode() {
         String street = "street";
         String number = "1";
@@ -173,6 +181,7 @@ class AddressTest {
     }
 
     @Test
+    @DisplayName("Construtctor should throw illegal argument exception with wrong zip code")
     void constructor_shouldThrowIllegalArgument_withWrongUSZipCode() {
         String street = "street";
         String number = "1";

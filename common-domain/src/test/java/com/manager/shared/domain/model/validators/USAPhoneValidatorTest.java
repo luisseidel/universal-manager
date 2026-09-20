@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class USAPhoneValidatorTest {
 
     @Test
-    @DisplayName("Should return empty string when a null phone")
+    @DisplayName("Clean should return empty string when a null phone")
     void clean_shouldReturnEmptyString_withNullPhone() {
         //Arrange
         String ddi = "1";
@@ -25,6 +25,7 @@ class USAPhoneValidatorTest {
     }
 
     @Test
+    @DisplayName("Clean should return a cleaned phone when a valid argument is passed")
     void clean_shouldReturnCleanPhone_withValidArgs() {
         //Arrange
         String ddi = "1";
@@ -41,6 +42,7 @@ class USAPhoneValidatorTest {
     }
 
     @Test
+    @DisplayName("IsValid should return true when a valid number is passed")
     void isValid_shouldReturnTrue_whenValidNumber() {
         //Arrange
         String number = "5552234567";
@@ -55,6 +57,7 @@ class USAPhoneValidatorTest {
     }
 
     @Test
+    @DisplayName("isValid should return false when invalid number is passed")
     void isValid_shouldReturnFalse_whenInvalidNumber() {
         //Arrange
         String number = "5199999888888";
@@ -69,6 +72,7 @@ class USAPhoneValidatorTest {
     }
 
     @Test
+    @DisplayName("Format should return a formatted phone, when valid number is passed")
     void format_shouldReturnFormatted_whenValidNumber() {
         //Arrange
         String number = "5552234567";
@@ -83,6 +87,7 @@ class USAPhoneValidatorTest {
     }
 
     @Test
+    @DisplayName("Format should return a cleaned number when wrong number type")
     void format_shouldReturnCleanedNumber_whenWrongNumberType() {
         //Arrange
         String number = "51a374877222222s";

@@ -41,21 +41,18 @@ public class RegisterPatient {
             notification.addError("- Documento: " + e.getMessage());
         }
 
-        // Validação do Email
         try {
             new Email(request.email());
         } catch (IllegalArgumentException e) {
             notification.addError("- E-mail: " + e.getMessage());
         }
 
-        // Validação do Telefone
         try {
             new Phone(request.phoneNumber(), Country.fromCodeOrDdi(request.phoneCountryCode()));
         } catch (IllegalArgumentException e) {
             notification.addError("- Telefone: " + e.getMessage());
         }
 
-        // Validação do Endereço
         try {
             new Address(request.street(), request.number(), request.complement(),
                     request.neighborhood(), request.city(), request.state(),
@@ -64,14 +61,12 @@ public class RegisterPatient {
             notification.addError("- Endereço: " + e.getMessage());
         }
 
-        // Se houver qualquer erro acumulado, lançamos uma exceção customizada com todos eles
         if (notification.hasErrors()) {
-            throw new DomainValidationException(notification.getErrorMessage());
+            throw new DomainValidationException(notification.getErrors());
         }
 
         Patient p = mapper.toDomain(request);
 
-        // 3. Persistir
         repository.save(p);
         eventPublisher.publish(new PatientCreatedEvent(p.getId(), p.getName()));
     }

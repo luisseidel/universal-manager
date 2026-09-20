@@ -2,12 +2,14 @@ package com.manager.shared.domain.model.validators;
 
 import com.manager.shared.domain.enums.Country;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-public class PhoneValidatorFactoryTest {
+class PhoneValidatorFactoryTest {
 
     @Test
+    @DisplayName("Get Validator should return exception when null country")
     void getValidator_shouldReturnException_whenNullCountry() {
         Country country = null;
         Executable exec = () -> PhoneValidatorFactory.getValidator(country);
@@ -18,6 +20,7 @@ public class PhoneValidatorFactoryTest {
     }
 
     @Test
+    @DisplayName("Get Validator should return exception when not implemented country")
     void getValidator_shouldReturnException_whenNotImplementedCountry() {
         Country country = Country.UNITED_KINGDOM;
         Executable exec = () -> PhoneValidatorFactory.getValidator(country);
@@ -28,6 +31,7 @@ public class PhoneValidatorFactoryTest {
     }
 
     @Test
+    @DisplayName("Get Validator, Should return Validator when valid country")
     void getValidator_shouldReturnValidator_whenValidCountry() {
         Country country = Country.BRAZIL;
 

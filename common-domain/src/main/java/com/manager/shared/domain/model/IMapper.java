@@ -8,7 +8,7 @@ public interface IMapper<T, R, Q, U> {
     R toResponse(T entity);
     T toDomain(Q request);
     default void updateEntity(T entity, U request) {
-        throw new UnsupportedOperationException("Update não implementado para esse mapper");
+        throw new UnsupportedOperationException("Update not implemented for this mapper");
     }
     default List<R> toResponseList(List<T> entities) {
         if (entities == null) return Collections.emptyList();
